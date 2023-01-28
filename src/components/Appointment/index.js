@@ -19,11 +19,3 @@ export default function Appointment(props) {
     </article>
   );
 };
-
-/*
-return (props.yourName ? <h1>Hello, {props.yourName}.</h1> : <h1>Sorry, you don't seem to have a name.</h1>);
-
-If props.interview (an interview object) is truthy the <Appointment> 
-will render the <Show> component, else it should render the <Empty> component.
-
-*/
