@@ -3,6 +3,7 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 
 
 export default function Application(props) {
@@ -10,28 +11,47 @@ export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   });
 
   const setDay = day => setState({ ...state, day });
-  const setDays = days => setState(prev => ({ ...prev, days }));
 
   // Fetch the days from the API and add to state
   useEffect(() => {
-    axios.get('http://localhost:8001/api/days').then((response) => setDays(response.data));
+    Promise.all([
+      axios.get('http://localhost:8001/api/days'),
+      axios.get('http://localhost:8001/api/appointments'),
+      axios.get('http://localhost:8001/api/interviewers'),
+    ]).then((all) => {
+      setState(prev => ({
+        ...prev,
+        days: all[0].data,
+        appointments: all[1].data,
+        interviewers: all[2].data
+      }));
+    });
   }, []);
 
+  // Get the appointments for the selected day
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+
   // Create the list of Appointment components for each day
-  const apptComponents = Object.values(appointments).map(appt => {
+  const schedule = dailyAppointments.map(appointment => {
+    // Get the interview object from
+    const interview = getInterview(state, appointment.interview);
+
     return (
       <Appointment
-        key={appt.id}
-        {...appt}
-      />);
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+      />
+    );
   });
   // Add a final component to the array to indicate the end of the day
-  apptComponents.push(<Appointment key="last" time="5pm" />);
-
+  schedule.push(<Appointment key="last" time="5pm" />);
 
   return (
     <main className="layout">
@@ -56,7 +76,7 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {apptComponents}
+        {schedule}
       </section>
     </main>
   );

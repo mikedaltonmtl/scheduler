@@ -1,3 +1,15 @@
+/* 
+ * Function receives days and appointment objects in state
+ * and the name of the given day.
+ * 
+ * Returns an array of the appointment objects for the given day
+ * in the form: [ { id: 4, time: '3pm', interview: null },
+ *                {
+ *                  id: 5,
+ *                  time: '4pm',
+ *                  interview: { student: 'Chad Takahashi', interviewer: 2 }
+ *                } ]
+ */
 export function getAppointmentsForDay(state, day) {
 
   // Return an empty array if the days data is empty
@@ -23,4 +35,28 @@ export function getAppointmentsForDay(state, day) {
   }
 
   return appointmentsForDay;
+};
+
+/*
+ * Function receives state and a given interview.
+ *
+ * Returns an interview object containing all of the interviewer details:
+ * {  
+ *  "student": "Lydia Miller-Jones",
+ *  "interviewer": {  
+ *  "id": 1,
+ *  "name": "Sylvia Palmer",
+ *  "avatar": "https://i.imgur.com/LpaY82x.png"
+ * }
+}
+ */
+export function getInterview(state, interview) {
+  // If there is no interview (state.appointments[id].interview is null), return null
+  if (!interview) {
+    return null;
+  }
+  // If we have an interview, return an object as specified
+  const interviewerId = interview.interviewer;
+  const interviewerObject = state.interviewers[interviewerId];
+  return {...interview, interviewer: interviewerObject};
 };
