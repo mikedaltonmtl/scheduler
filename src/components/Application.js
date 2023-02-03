@@ -17,7 +17,7 @@ export default function Application(props) {
 
   const setDay = day => setState({ ...state, day });
 
-  // Fetch the days from the API and add to state
+  // Fetch the data from the API and add to state
   useEffect(() => {
     Promise.all([
       axios.get('http://localhost:8001/api/days'),
