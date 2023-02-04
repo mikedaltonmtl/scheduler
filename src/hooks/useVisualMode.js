@@ -4,10 +4,11 @@ export default function useVisualMode(initial) {
   // Set state of mode and history with the initial mode provided
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
-  // Use a copy of history to avoid stale state
+  // Use a copy of history to manage state
   let newHistory = [...history];
 
   const transition = function (newMode, replace = false) {
+    console.log(`in transition fn, newMode = ${newMode}, replace = ${replace}`);
     // Replace (remove current mode before adding a new one)
     if (replace) {
       newHistory.pop();
@@ -19,7 +20,8 @@ export default function useVisualMode(initial) {
   };
 
   const back = function () {
-    // Avoid going back past the initial mode
+    console.log(`in back fn`);
+    // Avoid removing the initial mode
     if (newHistory.length < 2) {
       return;
     }
