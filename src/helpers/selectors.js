@@ -60,3 +60,41 @@ export function getInterview(state, interview) {
   const interviewerObject = state.interviewers[interviewerId];
   return {...interview, interviewer: interviewerObject};
 };
+
+/* 
+ * Function receives days and interviewers objects in state
+ * and the name of the given day.
+ * 
+ * Returns an array of the interviwers objects for the given day
+ * in the form: [ {
+ *                  id: 2,
+ *                  name: "Tori Malcolm",
+ *                  avatar: "https://i.imgur.com/Nmx0Qxo.png"
+ *                } ]
+ */
+export function getInterviewersForDay(state, day) {
+
+  // Return an empty array if the days data is empty
+  if (state.days.length === 0) {
+    return [];
+  }
+
+  // Filter the interviewers data for the given day only
+  const filteredDays = state.days.filter(dayObject => dayObject.name === day);
+
+  // If the given day is not found, return an empty array
+  if (filteredDays.length === 0) {
+    return [];
+  }
+
+  // Get the array of appointment IDs from the day object
+  const interviewerIds = filteredDays[0].interviewers;
+
+  // Add each appointment to return array
+  const interviewersForDay = [];
+  for (const interviewerId of interviewerIds) {
+    interviewersForDay.push(state.interviewers[interviewerId]);
+  }
+
+  return interviewersForDay;
+};
