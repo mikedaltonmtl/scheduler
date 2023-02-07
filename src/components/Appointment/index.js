@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "components/Appointment/styles.scss";
 import Header from "components/Appointment/Header";
 import Show from "components/Appointment/Show";
@@ -13,7 +13,9 @@ export default function Appointment(props) {
   const SHOW = "SHOW";
   const CREATE = "FORM";
   const STATUS = "STATUS";
+  const [statusMsg, setStatusMsg] = useState("");
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
+
 
   function save(name, interviewer) {
     const interview = {
@@ -21,15 +23,17 @@ export default function Appointment(props) {
       interviewer
     };
     // Pessimistic User Flow, show 'saving' image while posting to server
+    setStatusMsg("Saving");
     transition(STATUS);
     props.bookInterview(props.id, interview)
     .then(() => transition(SHOW));
   };
 
   function deleteAppointment() {
+    setStatusMsg("Deleting");
     transition(STATUS);
     props.cancelInterview(props.id)
-    .then(() => transition(SHOW));
+    .then(() => transition(EMPTY));
   }
 
   return (
@@ -51,7 +55,7 @@ export default function Appointment(props) {
           onCancel={back}
         />
       )}
-      {mode === STATUS && <Status message="Saving" />}
+      {mode === STATUS && <Status message={statusMsg} />}
     </article>
   );
 };

@@ -12,7 +12,7 @@ export default function Application(props) {
     day: "Monday",
     days: [],
     appointments: {},
-    interviewers: {}
+    interviewers: {},
   });
 
   const setDay = day => setState({ ...state, day });
@@ -50,7 +50,7 @@ export default function Application(props) {
     }).then(res => {
       setState({
         ...state,
-        appointments
+        appointments,
       });
     });
   };
@@ -72,7 +72,7 @@ export default function Application(props) {
     .then(res => {
       setState({
         ...state,
-        appointments
+        appointments,
       });
     });
 
