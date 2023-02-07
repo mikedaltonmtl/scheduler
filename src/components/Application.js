@@ -3,7 +3,7 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 
 export default function Application(props) {
@@ -33,12 +33,58 @@ export default function Application(props) {
     });
   }, []);
 
-  // Get the appointments for the selected day
+  // User has clicked the save button in Form mode
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return axios.put(`/api/appointments/${id}`, {
+      interview: interview
+    }).then(res => {
+      setState({
+        ...state,
+        appointments
+      });
+    });
+  };
+
+  // User has clicked delete icon on an interview component
+  function cancelInterview(id) {
+    // To delete an Appointment, set it's Interview data to null
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return axios.delete(`/api/appointments/${id}`)
+    .then(res => {
+      setState({
+        ...state,
+        appointments
+      });
+    });
+
+  };
+
+  // Use selectors to get the interviewers & appointments for the day
+  const dailyInterviewers = getInterviewersForDay(state, state.day);
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   // Create the list of Appointment components for each day
   const schedule = dailyAppointments.map(appointment => {
-    // Get the interview object from
+    // Get the interview object (will return null if there is none)
     const interview = getInterview(state, appointment.interview);
 
     return (
@@ -47,6 +93,9 @@ export default function Application(props) {
         id={appointment.id}
         time={appointment.time}
         interview={interview}
+        interviewers={dailyInterviewers}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });

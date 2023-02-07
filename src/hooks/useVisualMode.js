@@ -8,7 +8,6 @@ export default function useVisualMode(initial) {
   let newHistory = [...history];
 
   const transition = function (newMode, replace = false) {
-    console.log(`in transition fn, newMode = ${newMode}, replace = ${replace}`);
     // Replace (remove current mode before adding a new one)
     if (replace) {
       newHistory.pop();
@@ -20,7 +19,6 @@ export default function useVisualMode(initial) {
   };
 
   const back = function () {
-    console.log(`in back fn`);
     // Avoid removing the initial mode
     if (newHistory.length < 2) {
       return;
