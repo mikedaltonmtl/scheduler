@@ -5,6 +5,7 @@ import Show from "components/Appointment/Show";
 import Empty from "components/Appointment/Empty";
 import Status from "components/Appointment/Status";
 import Confirm from "components/Appointment/Confirm";
+import Error from "components/Appointment/Error";
 import useVisualMode from "hooks/useVisualMode";
 import Form from "./Form";
 
@@ -15,10 +16,11 @@ export default function Appointment(props) {
   const CREATE = "FORM";
   const CONFIRM = "CONFIRM";
   const EDIT = "EDIT";
+  const ERROR_SAVE = "ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
   const STATUS = "STATUS";
   const [statusMsg, setStatusMsg] = useState("");
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
-
 
   function save(name, interviewer) {
     const interview = {
@@ -28,15 +30,19 @@ export default function Appointment(props) {
     // Pessimistic User Flow, show 'saving' image while posting to server
     setStatusMsg("Saving");
     transition(STATUS);
-    props.bookInterview(props.id, interview)
-    .then(() => transition(SHOW));
+    props
+      .bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(() => transition(ERROR_SAVE, true));
   };
 
   function deleteAppointment() {
     setStatusMsg("Deleting");
-    transition(STATUS);
-    props.cancelInterview(props.id)
-    .then(() => transition(EMPTY));
+    transition(STATUS, true);
+    props
+      .cancelInterview(props.id)
+      .then(() => transition(EMPTY))
+      .catch(() => transition(ERROR_DELETE, true));
   }
 
   return (
@@ -75,6 +81,19 @@ export default function Appointment(props) {
           interviewer={props.interview.interviewer.id}
         />
       )}
+      {mode === ERROR_SAVE && (
+        <Error
+          message="Could not reserve appointment."
+          onClose={back}
+        />
+      )}
+      {mode === ERROR_DELETE && (
+        <Error
+          message="Could not cancel appointment."
+          onClose={back}
+        />
+      )}
+
     </article>
   );
 };
