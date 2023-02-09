@@ -1,16 +1,46 @@
-import { useState, useEffect } from "react";
+import { useReducer, useEffect } from "react";
 import axios from "axios";
 
 export default function useApplicationData() {
+  
+  const initialState = {
+      day: "Monday",
+      days: [],
+      appointments: {},
+      interviewers: {},
+  };
+  const SET_DAY = "SET_DAY";
+  const SET_DAYS = "SET_DAYS"
+  const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+  const SET_INTERVIEW = "SET_INTERVIEW";
 
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {},
-  });
+  function reducer(state, action) {
 
-  const setDay = day => setState({ ...state, day });
+    switch (action.type) {
+      case SET_DAY:
+        return { ...state, day: action.day }
+      case SET_APPLICATION_DATA:
+        return {
+          ...state,
+          days: action.days,
+          appointments: action.appointments,
+          interviewers: action.interviewers
+        }
+      case SET_DAYS:
+        return { ...state, days: action.days }
+      case SET_INTERVIEW:
+        return { ...state, appointments: action.appointments }
+      default:
+        throw new Error(
+          `Tried to reduce with unsupported action type: ${action.type}`
+        );
+    }
+  };
+  // Pass a reducer and the initial state
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  // Manage the change when the user click on a DayListItem component
+  const setDay = day => dispatch({ type: SET_DAY, day: day });
 
   // Fetch the data from the API and add to state
   useEffect(() => {
@@ -18,13 +48,14 @@ export default function useApplicationData() {
       axios.get('http://localhost:8001/api/days'),
       axios.get('http://localhost:8001/api/appointments'),
       axios.get('http://localhost:8001/api/interviewers'),
-    ]).then((all) => {
-      setState(prev => ({
-        ...prev,
+    ])
+    .then((all) => {
+      dispatch({ 
+        type: SET_APPLICATION_DATA,
         days: all[0].data,
         appointments: all[1].data,
         interviewers: all[2].data
-      }));
+      });
     });
   }, []);
 
@@ -37,8 +68,7 @@ export default function useApplicationData() {
       }
       return day;
     });
-
-    setState({...state, newDays});
+    dispatch({ type: SET_DAYS, days: newDays });
   };
 
   // Called when user clicks the save button in Form mode
@@ -58,11 +88,9 @@ export default function useApplicationData() {
       interview: interview
     }).then(res => {
       updateSpots('decrease');
-      setState({
-        ...state,
-        appointments
-      });
+      dispatch({ type: SET_INTERVIEW, appointments: appointments });
     });
+
   };
 
   // Called when user clicks delete icon on an interview component
@@ -81,10 +109,7 @@ export default function useApplicationData() {
     return axios.delete(`/api/appointments/${id}`)
     .then(res => {
       updateSpots('increase');
-      setState({
-        ...state,
-        appointments
-      });
+      dispatch({ type: SET_INTERVIEW, appointments: appointments });
     });
   };
   return { state, setDay, bookInterview, cancelInterview };
