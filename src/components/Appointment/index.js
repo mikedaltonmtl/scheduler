@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "components/Appointment/styles.scss";
 import Header from "components/Appointment/Header";
 import Show from "components/Appointment/Show";
@@ -45,11 +45,23 @@ export default function Appointment(props) {
       .catch(() => transition(ERROR_DELETE, true));
   }
 
+  // Correct for Stale State in interviews when using WebSockets
+  useEffect(() => {
+    // Interview has been added by another client, we need to change rendering to SHOW mode
+    if (mode === EMPTY && props.interview) {
+      transition(SHOW);
+    }
+    // Interview has been removed, we need to render EMPTY mode
+    if (mode === SHOW && !props.interview) {
+      transition(EMPTY);
+    }
+  }, [mode, props.interview, transition]);
+
   return (
     <article className="appointment">
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
-      {mode === SHOW && (
+      {mode === SHOW && props.interview && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
