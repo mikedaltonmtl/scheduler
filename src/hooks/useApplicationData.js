@@ -30,9 +30,14 @@ export default function useApplicationData() {
       case SET_DAYS:
         return { ...state, days: action.days }
       case SET_INTERVIEW:
+        // Don't update state immediately, wait to update days object also (to avoid stale state)
+        // Update the appointments object
         const updatedState = { ...state, appointments: action.appointments };
+        // Send the partial update to receive the news days object
         const updatedDays = updateSpots(updatedState);
+        // Update the days object
         updatedState.days = updatedDays;
+        // Update state with the changed objects
         return updatedState;
       default:
         throw new Error(
@@ -48,7 +53,7 @@ export default function useApplicationData() {
 
   // Use WebSockets for multiple browser functionality
   useEffect(() => {
-    // Do not fire if state has not been populated yet
+    // Do not fire if state has not been populated yet (initial render)
     if (!state.appointments['1']) {
       return;
     }
@@ -62,7 +67,6 @@ export default function useApplicationData() {
     };
     // Listener for server messages
     ws.onmessage = (event) => {
-
       const msg = JSON.parse(event.data);
       // If the server is sending a SET_INTERVIEW message update the browser
       if (msg.type === "SET_INTERVIEW") {
@@ -76,7 +80,7 @@ export default function useApplicationData() {
           ...state.appointments,
           [msg.id]: appointment
         };
-        // Dispatch the changes
+
         dispatch({ type: SET_INTERVIEW, appointments: appointments });
       }
     };
@@ -99,12 +103,9 @@ export default function useApplicationData() {
     });
   }, []);
 
-
+  // Function will receive the current state and update the spots count in the days object
+  // It will NOT update state direcly, but will return an up to date days object to be put in state
   function updateSpots(state) {
-    
-    console.log('state.appointments', state.appointments);
-
-    // id parameter is the appointment id in the appointments array of a day... find the day
     let emptySpots = 0;
     const dayName = state.day;
 
@@ -112,15 +113,12 @@ export default function useApplicationData() {
       // Use our appointment id to find the current day
       if (day.name === dayName) {
         // We have the day, now we can iterate over it's appointments array
-        console.log('found day', day);
-
         for (const appointmentId of day.appointments) {
           // Each null interview is an empty spot
           if (state.appointments[appointmentId].interview === null) {
-            console.log('appointmentId', appointmentId, 'is null');
             emptySpots ++;
-            console.log('emptySpots', emptySpots);
           }
+          // Update the number of empty spots in the day object
           day.spots = emptySpots;
         }
       }
