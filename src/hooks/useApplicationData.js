@@ -34,7 +34,7 @@ export default function useApplicationData() {
         // Update the appointments object
         const updatedState = { ...state, appointments: action.appointments };
         // Send the partial update to receive the news days object
-        const updatedDays = updateSpots(updatedState);
+        const updatedDays = updateSpots(updatedState, action.id);
         // Update the days object
         updatedState.days = updatedDays;
         // Update state with the changed objects
@@ -81,7 +81,7 @@ export default function useApplicationData() {
           [msg.id]: appointment
         };
 
-        dispatch({ type: SET_INTERVIEW, appointments: appointments });
+        dispatch({ type: SET_INTERVIEW, appointments: appointments, id: msg.id });
       }
     };
   }, [state.appointments]);
@@ -105,9 +105,22 @@ export default function useApplicationData() {
 
   // Function will receive the current state and update the spots count in the days object
   // It will NOT update state direcly, but will return an up to date days object to be put in state
-  function updateSpots(state) {
+  function updateSpots(state, id) {
     let emptySpots = 0;
-    const dayName = state.day;
+    let dayName = state.day;
+    /**
+     * If an appointment has been changed by a different browser (because of WebSockets functionality),
+     * the day.name in state may be different to that of this browser, so we need to use the
+     * appointment id to get the day (dayName) whose spots need to be updated
+    */ 
+    if (id) {
+      for (const updatedDay of state.days) {
+        if (updatedDay.appointments.includes(id)) {
+          dayName = updatedDay.name;
+          break;
+        }
+      }
+    }
 
     const newDays = state.days.map(day => {
       // Use our appointment id to find the current day
@@ -127,7 +140,7 @@ export default function useApplicationData() {
     return newDays;
   };
 
-  // Called when user clicks the save button in Form mode
+  // Called when user clicks the save button in form mode
   function bookInterview(id, interview) {
 
     const appointment = {
@@ -143,12 +156,12 @@ export default function useApplicationData() {
     return axios.put(`/api/appointments/${id}`, {
       interview: interview
     })
-    .then(() => dispatch({ type: SET_INTERVIEW, appointments: appointments }));
+    .then(() => dispatch({ type: SET_INTERVIEW, appointments: appointments, id: false }));
     };
 
   // Called when user clicks delete icon on an interview component
   function cancelInterview(id) {
-    // To delete an Appointment, set it's Interview data to null
+    // To delete an appointment, set it's interview data to null
     const appointment = {
       ...state.appointments[id],
       interview: null
@@ -160,7 +173,7 @@ export default function useApplicationData() {
     };
 
     return axios.delete(`/api/appointments/${id}`)
-    .then(() => dispatch({ type: SET_INTERVIEW, appointments: appointments }));
+    .then(() => dispatch({ type: SET_INTERVIEW, appointments: appointments, id: false }));
   };
 
   return { state, setDay, bookInterview, cancelInterview };
