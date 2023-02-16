@@ -31,13 +31,13 @@ export default function useApplicationData() {
         return { ...state, days: action.days }
       case SET_INTERVIEW:
         // Don't update state immediately, wait to update days object also (to avoid stale state)
-        // Update the appointments object
+        // Prepare a new state object with an updated appointments object
         const updatedState = { ...state, appointments: action.appointments };
-        // Send the partial update to receive the news days object
+        // Get the updated days object
         const updatedDays = updateSpots(updatedState, action.id);
-        // Update the days object
+        // Update the new state object with the new days object
         updatedState.days = updatedDays;
-        // Update state with the changed objects
+        // Update state with both of the changed objects
         return updatedState;
       default:
         throw new Error(
