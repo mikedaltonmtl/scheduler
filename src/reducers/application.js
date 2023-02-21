@@ -18,7 +18,7 @@ export default function reducer(state, action) {
     case SET_DAYS:
       return { ...state, days: action.days }
     case SET_INTERVIEW:
-      // Don't update state immediately, wait to update days object also (to avoid stale state)
+      // Don't update state immediately, wait to update days object too (to avoid stale state)
       // Prepare a new state object with an updated appointments object
       const updatedState = { ...state, appointments: action.appointments };
       // Get the updated days object

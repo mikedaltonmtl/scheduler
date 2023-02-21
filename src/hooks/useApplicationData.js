@@ -31,10 +31,6 @@ export default function useApplicationData() {
     const url = process.env.REACT_APP_WEBSOCKET_URL;
     // Attempt connection with server
     const ws = new WebSocket(url);
-    // Send test message once connection has been established
-    ws.onopen = (event) => {
-      ws.send('ping');
-    };
     // Listener for server messages
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);

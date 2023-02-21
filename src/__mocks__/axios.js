@@ -1,5 +1,3 @@
-
-
 const fixtures = {
 
   days: [
