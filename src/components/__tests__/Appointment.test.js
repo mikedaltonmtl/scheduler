@@ -10,4 +10,4 @@ describe("Appointment", () => {
     render(<Appointment />);
   });
 
-}); // end of describe
+});

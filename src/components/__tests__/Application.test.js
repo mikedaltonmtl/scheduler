@@ -168,6 +168,4 @@ describe("Application", () => {
       .find(day => queryByText(day, "Monday"));
     expect(getByText(day, /1 spot remaining/i)).toBeInTheDocument();
   });
-
 });
-    // console.log(prettyDOM(appointment));
