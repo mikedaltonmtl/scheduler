@@ -22,33 +22,39 @@ This project is part of my learnings at Lighthouse Labs.
 
 - Gain experience with different development environments, including Storybook, Jest, and Webpack Dev Server.
 
+## Screenshots
+
+This gif shows a new appointment being created, edited and finally deleted in the app.
+
+![Add, Edit and Delete actions](./public/images/scheduler.gif)
+
 ## Setup
 
 Install dependencies with `npm install`.
 
 ## Dependencies
 
-- "axios": "^0.20.0",
-- "classnames": "^2.2.6",
-- "normalize.css": "^8.0.1",
-- "react": "^16.9.0",
-- "react-dom": "^16.9.0",
-- "react-scripts": "3.4.4"
+- axios
+- classnames
+- normalize.css
+- react
+- react-dom
+- react-scripts
 
 ## Dev Dependencies
-- "@storybook/addon-actions": "^5.0.10",
-- "@babel/core": "^7.4.3",
-- "@storybook/addon-backgrounds": "^5.0.10",
-- "@storybook/addon-links": "^5.0.10",
-- "@storybook/addons": "^5.0.10",
-- "@storybook/react": "^5.0.10",
-- "@testing-library/jest-dom": "^4.0.0",
-- "@testing-library/react": "^8.0.7",
-- "@testing-library/react-hooks": "^8.0.1",
-- "babel-loader": "8.1.0",
-- "prop-types": "^15.8.1",
-- "react-test-renderer": "^16.9.0",
-- "sass": "^1.53.0"
+- storybook/addon-actions
+- babel/core
+- storybook/addon-backgrounds
+- storybook/addon-links
+- storybook/addons
+- storybook/react
+- testing-library/jest-dom
+- testing-library/react
+- testing-library/react-hooks
+- babel-loader
+- prop-types
+- react-test-renderer
+- sass
 
 ## Running Webpack Development Server
 
@@ -68,7 +74,15 @@ npm test
 npm run storybook
 ```
 
+## Running Cypress End-To-End Testing
+
+```sh
+npm run cypress
+```
+
+
 ## Project Structure
+```
 ├── .storybook
 ├── cypress
 │   ├── downloads
@@ -89,5 +103,7 @@ npm run storybook
 │   ├── reducers
 │   └── styles
 └── stories
+```
+
 
 
