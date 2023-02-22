@@ -22,9 +22,17 @@ This project is part of my learnings at Lighthouse Labs.
 
 - Gain experience with different development environments, including Storybook, Jest, and Webpack Dev Server.
 
+## Stretch Features
+
+- `useReducer`: The custom useApplicationData Hook has been refactored using useReducer.
+
+- `Spot remaining`: The spots remaining functionality has been implemented using reducers.
+
+- `WebSocket server connection`: The WebSocket API has been used to make a persistent connection to the scheduler API server.
+
 ## Screenshots
 
-This gif shows a new appointment being created, edited and finally deleted in the app.
+This gif shows a new appointment being created, edited and finally cancelled in the app:
 
 ![Add, Edit and Delete actions](./public/images/scheduler.gif)
 
@@ -56,6 +64,14 @@ Install dependencies with `npm install`.
 - react-test-renderer
 - sass
 
+## Running the Scheduler-Api Server
+
+In order for the Scheduler App to run, you will also need to install and run the Scheduler-api server.  Instruction can be found in the README.md file of the Scheduler-Api GitHub repoistory:
+
+[scheduler-api server](https://github.com/lighthouse-labs/scheduler-api)
+
+Note that the api server needs to run as a separate process in another terminal.
+
 ## Running Webpack Development Server
 
 ```sh
@@ -80,7 +96,6 @@ npm run storybook
 npm run cypress
 ```
 
-
 ## Project Structure
 ```
 ├── .storybook
@@ -104,6 +119,47 @@ npm run cypress
 │   └── styles
 └── stories
 ```
+
+## Documentation
+
+I have developed the following files within the app:
+
+### cypress > integration
+
+`appointments.spec.js`: End-to-end testing to add, edit and cancel appointments.
+
+`navigation.spec.js`: End-to-end testing change the selected day.
+
+### src > \_\_mocks\_\_
+
+`axios.js`: static data to replace api fetching when testing with Jest.
+
+### src > components > \_\_tests\_\_
+
+`Application.test.js`: Jest integration testing for Application behaviour.
+
+`Appointment.test.js`: Jest unit test that the componant is rendered.  Skipped by default.
+
+`Button.test.js`: Jest unit tests for the Button component.
+
+`DayListItem.test.js`: Jest unit test for the number of spots remaining displayed by the DayListItem component. 
+
+`Form.test.js`: Jest unit tests on the Form component.
+
+### src components > Appointment & Components
+
+This section of files with Capialized names contains the components (.js) and their styles (.scss).
+
+### src > helpers
+
+`selectors.js`: Transform api data into a format better suited to the data structure of the app.
+
+`selectors.test.js`: Jest unit tests for the selector functions.
+
+### src > hooks
+
+
+
 
 
 
