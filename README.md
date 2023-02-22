@@ -26,13 +26,13 @@ This project is part of my learnings at Lighthouse Labs.
 
 - `useReducer`: The custom useApplicationData Hook has been refactored using useReducer.
 
-- `Spots remaining`: The spots remaining functionality has been implemented using reducers.
+- `Spots remaining`: The spots remaining functionality has been implemented with reducers.
 
-- `WebSocket server connection`: The WebSocket API has been used to make a persistent connection to the scheduler API server.
+- `WebSocket server connection`: The WebSocket API has been used to make persistent connections to the scheduler API server.
 
 ## Screenshots
 
-This gif shows a new appointment being created, edited and finally cancelled in the app:
+This gif shows a new appointment being created, edited and then cancelled in the app:
 
 ![Add, Edit and Delete actions](./public/images/scheduler.gif)
 
@@ -66,7 +66,7 @@ Install dependencies with `npm install`.
 
 ## Running the Scheduler-Api Server
 
-In order for the Scheduler App to run, you will also need to install and run the Scheduler-api server.  Instruction can be found in the README.md file of the Scheduler-Api GitHub repoistory:
+In order for the Scheduler App to run, you will also need to install and run the Scheduler-api server.  Instruction can be found in the README.md file of the Scheduler-Api GitHub repoistory below:
 
 [scheduler-api server](https://github.com/lighthouse-labs/scheduler-api)
 
@@ -96,7 +96,7 @@ npm run storybook
 npm run cypress
 ```
 
-## Project Structure
+## Project Directory Structure
 ```
 ├── .storybook
 ├── cypress
@@ -128,7 +128,7 @@ I have developed the following files within the app:
 
 `appointments.spec.js`: End-to-end testing to add, edit and cancel appointments.
 
-`navigation.spec.js`: End-to-end testing change the selected day.
+`navigation.spec.js`: End-to-end testing to change the selected day.
 
 ### src > \_\_mocks\_\_
 
@@ -152,7 +152,7 @@ This section of files with Capialized names contains the components (.js) and th
 
 ### src > helpers
 
-`selectors.js`: Transform api data into a format better suited to the data structure of the app.
+`selectors.js`: Transform api data into a format optimized for the data structure of the app.
 
 `selectors.test.js`: Jest unit tests for the selector functions.
 
@@ -164,17 +164,17 @@ This section of files with Capialized names contains the components (.js) and th
 
 `useApplicationData.test.js`: Custom hooks to modify appointments, contains WebSocket server connection.
 
-`useVisualMode.test.js`: Custom hook uses a data stack to manage form views for appointments.
+`useVisualMode.test.js`: A custom hook that uses a data stack to manage form views for the appointments.
 
 ### reducers
 
-`application.js`: Contains the reducer function and associated function to update spots.
+`application.js`: Contains the reducer function and associated function to update the spots remaining.
 
 `application.test.js`: Single Jest unit test for error handling in the reducer function.
 
 ### stories
 
-`index.js`: Storybook unit tests for individual components.
+`index.js`: Storybook unit tests for the individual components.
 
 
 
