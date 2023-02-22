@@ -66,11 +66,11 @@ Install dependencies with `npm install`.
 
 ## Running the Scheduler-Api Server
 
-In order for the Scheduler App to run, you will also need to install and run the Scheduler-api server.  Instruction can be found in the README.md file of the Scheduler-Api GitHub repoistory below:
+In order for the Scheduler App to run, you will also need to install and run the Scheduler-Api server.  Instruction can be found in the README.md file of the Scheduler-Api GitHub repoistory below:
 
 [scheduler-api server](https://github.com/lighthouse-labs/scheduler-api)
 
-Note that the api server needs to run as a separate process in another terminal.
+Note that the API server needs to run as a separate process in another terminal.
 
 ## Running Webpack Development Server
 
@@ -132,7 +132,7 @@ I have developed the following files within the app:
 
 ### src > \_\_mocks\_\_
 
-`axios.js`: static data to replace api fetching when testing with Jest.
+`axios.js`: static data to replace API fetching when testing with Jest.
 
 ### src > components > \_\_tests\_\_
 
@@ -168,7 +168,7 @@ This section of files with Capialized names contains the components (.js) and th
 
 ### reducers
 
-`application.js`: Contains the reducer function and associated function to update the spots remaining.
+`application.js`: Contains the reducer function and an associated function to update the spots remaining.
 
 `application.test.js`: Single Jest unit test for error handling in the reducer function.
 
