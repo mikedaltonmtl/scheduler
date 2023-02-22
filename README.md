@@ -26,7 +26,7 @@ This project is part of my learnings at Lighthouse Labs.
 
 - `useReducer`: The custom useApplicationData Hook has been refactored using useReducer.
 
-- `Spot remaining`: The spots remaining functionality has been implemented using reducers.
+- `Spots remaining`: The spots remaining functionality has been implemented using reducers.
 
 - `WebSocket server connection`: The WebSocket API has been used to make a persistent connection to the scheduler API server.
 
@@ -156,7 +156,25 @@ This section of files with Capialized names contains the components (.js) and th
 
 `selectors.test.js`: Jest unit tests for the selector functions.
 
+### src > hooks > \_\_tests\_\_
+
+`useVisualMode.test.js`: Jest unit tests for the corresponding custom hooks.
+
 ### src > hooks
+
+`useApplicationData.test.js`: Custom hooks to modify appointments, contains WebSocket server connection.
+
+`useVisualMode.test.js`: Custom hook uses a data stack to manage form views for appointments.
+
+### reducers
+
+`application.js`: Contains the reducer function and associated function to update spots.
+
+`application.test.js`: Single Jest unit test for error handling in the reducer function.
+
+### stories
+
+`index.js`: Storybook unit tests for individual components.
 
 
 
