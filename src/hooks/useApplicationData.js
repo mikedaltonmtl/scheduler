@@ -50,6 +50,13 @@ export default function useApplicationData() {
         dispatch({ type: SET_INTERVIEW, appointments: appointments, id: msg.id });
       }
     };
+
+    return () => {
+      // readyState === 1 if the connection is open
+      if (ws.readyState === 1) {
+          ws.close();
+      }
+    };
   }, [state.appointments]);
 
   // Fetch the data from the API and add to state
