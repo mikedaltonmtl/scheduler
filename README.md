@@ -34,7 +34,7 @@ This project is part of my learnings at Lighthouse Labs.
 
 This gif shows a new appointment being created, edited and then cancelled in the app:
 
-![Add, Edit and Delete actions](./public/images/scheduler.gif)
+![Add, Edit and Delete actions](./docs/scheduler.gif)
 
 ## Setup
 
