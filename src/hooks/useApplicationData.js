@@ -52,7 +52,7 @@ export default function useApplicationData() {
     };
 
     return () => {
-      // readyState === 1 if the connection is open
+      // Clean up after the effect (readyState === 1 if the connection is open)
       if (ws.readyState === 1) {
           ws.close();
       }
