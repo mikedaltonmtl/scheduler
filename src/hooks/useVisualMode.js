@@ -1,32 +1,37 @@
 import { useState } from "react";
 
 export default function useVisualMode(initial) {
-  // Set state of mode and history with the initial mode provided
-  const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
-  // Use a copy of history to manage state
-  let newHistory = [...history];
 
+  /**
+   * Transition adds a new mode to the stack unless 'replace' is true, in which case
+   * we remove the current mode and replace it with the given new mode.
+   */
   const transition = function (newMode, replace = false) {
-    // Replace (remove current mode before adding a new one)
-    if (replace) {
-      newHistory.pop();
-    }
-    // Transition (add a mode to the stack)
-    setMode(newMode);
-    newHistory = [...newHistory, newMode];
-    setHistory(newHistory);
+
+    setHistory(prevHistory => {
+      if (replace) {
+        prevHistory.pop();
+      }
+      return [...prevHistory, newMode];
+    });
   };
 
+  /**
+   * Remove the last mode from the stack (set mode to the previous value).
+   * Validate that the stack has at least 2 elements so as not to remove the initial mode.
+   */
   const back = function () {
-    // Avoid removing the initial mode
-    if (newHistory.length < 2) {
+    if (history.length < 2) {
       return;
     }
-    newHistory.pop();
-    setMode(newHistory[newHistory.length - 1]);
-    setHistory(newHistory);
+
+    setHistory(prevHistory => {
+      prevHistory.pop();
+      return [...prevHistory];
+    });
   };
 
-  return { mode, transition, back };
+  const mode = history[history.length - 1];
+  return { mode , transition, back };
 };
