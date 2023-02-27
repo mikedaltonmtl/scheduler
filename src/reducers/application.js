@@ -7,8 +7,7 @@ export default function reducer(state, action) {
 
   switch (action.type) {
     case SET_DAY:
-      // return { ...state, day: action.day };
-      return;
+      return { ...state, day: action.day };
     case SET_APPLICATION_DATA:
       return {
         ...state,
@@ -30,7 +29,7 @@ export default function reducer(state, action) {
       return updatedState;
     default:
       throw new Error(
-        `Tried to reduce with unsupported action type: ${action.type}`;
+        `Tried to reduce with unsupported action type: ${action.type}`
       );
   }
 };
