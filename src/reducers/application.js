@@ -7,16 +7,17 @@ export default function reducer(state, action) {
 
   switch (action.type) {
     case SET_DAY:
-      return { ...state, day: action.day }
+      // return { ...state, day: action.day };
+      return;
     case SET_APPLICATION_DATA:
       return {
         ...state,
         days: action.days,
         appointments: action.appointments,
         interviewers: action.interviewers
-      }
+      };
     case SET_DAYS:
-      return { ...state, days: action.days }
+      return { ...state, days: action.days };
     case SET_INTERVIEW:
       // Don't update state immediately, wait to update days object too (to avoid stale state)
       // Prepare a new state object with an updated appointments object
@@ -29,7 +30,7 @@ export default function reducer(state, action) {
       return updatedState;
     default:
       throw new Error(
-        `Tried to reduce with unsupported action type: ${action.type}`
+        `Tried to reduce with unsupported action type: ${action.type}`;
       );
   }
 };
